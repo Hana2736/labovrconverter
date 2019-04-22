@@ -102,6 +102,15 @@ public class Main {
         ffmPathBrowse.setBackground(Color.BLACK);
         layout.putConstraint(SpringLayout.WEST, ffmPathBrowse, 10, SpringLayout.EAST, ffmPath);
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, ffmPathBrowse, 0, SpringLayout.VERTICAL_CENTER, ffmPath);
+        JSpinner qual = new JSpinner(new SpinnerNumberModel(5, .01, 500, .1));
+        JLabel qualDesc = new JLabel("Quality of video in MB/s");
+        qualDesc.setForeground(Color.WHITE);
+        layout.putConstraint(SpringLayout.NORTH, qualDesc, 10, SpringLayout.SOUTH, ffmPath);
+        layout.putConstraint(SpringLayout.WEST, qualDesc, 0, SpringLayout.WEST, outPathStr);
+        pane.add(qualDesc);
+        layout.putConstraint(SpringLayout.NORTH, qual, 10, SpringLayout.SOUTH, qualDesc);
+        layout.putConstraint(SpringLayout.WEST, qual, 0, SpringLayout.WEST, qualDesc);
+        pane.add(qual);
         JButton start = new JButton("ffmpeg not found!");
         start.setBackground(Color.BLACK);
         start.setEnabled(false);
@@ -133,18 +142,18 @@ public class Main {
                 }
             }
         });
-        layout.putConstraint(SpringLayout.NORTH, start, 35, SpringLayout.SOUTH, ffmPath);
-        layout.putConstraint(SpringLayout.WEST, start, 0, SpringLayout.WEST, overwrite);
+        layout.putConstraint(SpringLayout.NORTH, start, 35, SpringLayout.SOUTH, qual);
+        layout.putConstraint(SpringLayout.WEST, start, 0, SpringLayout.WEST, qual);
         start.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String[] ffmpegArgs = new String[]{ffmPath.getText(), "-loglevel", "quiet", "-y", "-i", inPathSt.getText(), "-c:v", "libvpx-vp9", "-c:a", "libvorbis", "-s", "21060x1440", "-b:v", "10M", outPathStr.getText() + "/Cvr_Vr180_" + vidNames[(int) overwrite.getValue() - 1] + ".webm"};
+                String[] ffmpegArgs = new String[]{ffmPath.getText(), "-loglevel", "quiet", "-y", "-i", inPathSt.getText(), "-c:v", "libvpx-vp9", "-c:a", "libvorbis", "-s", "2560:1440", "-b:v", qual.getValue().toString(), outPathStr.getText() + "/Cvr_Vr180_" + vidNames[(int) overwrite.getValue() - 1] + ".webm"};
                 try {
                     for (int i = 0; i < ffmpegArgs.length; i++) {
                         System.out.print(ffmpegArgs[i] + " ");
                     }
                     window.setVisible(false);
-                    JOptionPane.showConfirmDialog(null, "Currently converting. You'll be notified when it's done.\nThis may take a very long time, depending on the source video.", "Labo VR Video Converter 0.1", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showConfirmDialog(null, "Currently converting. You'll be notified when it's done.\nThis may take a very long time, depending on the source video and your set quality.", "Labo VR Video Converter 0.1", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     Runtime.getRuntime().exec(ffmpegArgs).waitFor();
                     JOptionPane.showConfirmDialog(null, "Video conversion finished!\nRemember to put it in /atmosphere/titles/0100165003504000/RomFS/Learn/", "Labo VR Video Converter 0.1", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     System.exit(0);

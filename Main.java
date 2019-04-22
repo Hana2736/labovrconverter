@@ -20,7 +20,7 @@ public class Main {
             return;
         }
         SpringLayout layout = new SpringLayout();
-        JFrame window = new JFrame("Labo VR Video Converter 0.1");
+        JFrame window = new JFrame("Labo VR Video Converter 0.2");
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Container pane = window.getContentPane();
         pane.setBackground(Color.BLACK);
@@ -153,9 +153,9 @@ public class Main {
                         System.out.print(ffmpegArgs[i] + " ");
                     }
                     window.setVisible(false);
-                    JOptionPane.showConfirmDialog(null, "Currently converting. You'll be notified when it's done.\nThis may take a very long time, depending on the source video and your set quality.", "Labo VR Video Converter 0.1", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showConfirmDialog(null, "Currently converting. You'll be notified when it's done.\nThis may take a very long time, depending on the source video and your set quality.", "Labo VR Video Converter 0.2", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     Runtime.getRuntime().exec(ffmpegArgs).waitFor();
-                    JOptionPane.showConfirmDialog(null, "Video conversion finished!\nRemember to put it in /atmosphere/titles/0100165003504000/RomFS/Learn/", "Labo VR Video Converter 0.1", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showConfirmDialog(null, "Video conversion finished!\nRemember to put it in /atmosphere/titles/0100165003504000/RomFS/Learn/", "Labo VR Video Converter 0.2", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     System.exit(0);
                 } catch (Exception ex) {
                     System.out.println("FFMPEG failed!");

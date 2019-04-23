@@ -11,48 +11,56 @@ import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public Main() {
         String[] vidNames = {"01_Flag", "02_AquariumCallorhinus_00", "03_Deer_00", "04_Magic", "010_Dog_00", "06_WaterTap_00", "07_EatSushi_00", "08_Domino", "09_Cherry_00", "10_Cherry_01", "11_AquariumSalamander_00", "12_VirtualBoy", "13_SoapBubble", "14_BallMouth_00", "110_Cup_00", "16_Cup_01", "17_DogBaby", "18_Paint", "19_EatItalian_00", "20_AquariumPenguin_00", "21_TableCloth", "22_Taketonbo", "23_AquariumMedusa_00", "24_Origami", "210_MusicHappyBirthday", "26_EatChinese_00", "27_Kusudama", "28_Cat_00", "29_Baton", "30_UpsideDown", "31_Piano", "32_AquariumSea_00", "33_MusicTheme"};
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            System.out.println("Your OS is not supported.");
-            return;
-        }
+        UIManager.put("Panel.background", Color.black);
+        UIManager.put("OptionPane.background", Color.black);
+        UIManager.put("OptionPane.messageForeground", Color.white);
+        UIManager.put("Label.foreground", Color.white);
+        UIManager.put("TextArea.background", Color.black);
+        UIManager.put("TextArea.foreground", Color.white);
+        UIManager.put("TextField.background", Color.black);
+        UIManager.put("TextField.foreground", Color.white);
+        UIManager.put("FormattedTextField.background", Color.black);
+        UIManager.put("FormattedTextField.foreground", Color.white);
+        UIManager.put("Button.background", Color.darkGray);
+        UIManager.put("Button.darkShadow", Color.gray);
+        UIManager.put("Button.disabledText", Color.lightGray);
+        UIManager.put("Button.foreground", Color.white);
+        UIManager.put("FileChooser.background", Color.black);
+        UIManager.put("List.background", Color.black);
+        UIManager.put("ScrollPane.background", Color.black);
+        UIManager.put("List.foreground", Color.white);
+        UIManager.put("ComboBox.background", Color.black);
+        UIManager.put("ComboBox.foreground", Color.white);
         SpringLayout layout = new SpringLayout();
-        JFrame window = new JFrame("Labo VR Video Converter 0.3");
+        JFrame window = new JFrame("Labo VR Video Converter 1.0");
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Container pane = window.getContentPane();
-        pane.setBackground(Color.BLACK);
         window.setLayout(layout);
         JLabel desc = new JLabel("Convert videos to the format that Labo VR uses");
-        desc.setForeground(Color.WHITE);
         layout.putConstraint(SpringLayout.WEST, desc, 10, SpringLayout.WEST, pane);
         layout.putConstraint(SpringLayout.NORTH, desc, 10, SpringLayout.NORTH, pane);
         pane.add(desc);
         JFileChooser inPathPick = new JFileChooser();
         JLabel inPathDesc = new JLabel("Input video file");
-        inPathDesc.setForeground(Color.WHITE);
         layout.putConstraint(SpringLayout.NORTH, inPathDesc, 35, SpringLayout.SOUTH, desc);
         layout.putConstraint(SpringLayout.WEST, inPathDesc, 0, SpringLayout.WEST, desc);
-        inPathDesc.setFont(new Font("Calibri",Font.BOLD,15));
+        inPathDesc.setFont(new Font("Arial", Font.BOLD, 15));
         pane.add(inPathDesc);
-        JTextArea inPathSt = new JTextArea("<input path> ");
-        inPathSt.setFont(desc.getFont());
-        desc.setFont(new Font("Calibri",Font.BOLD,20));
-        inPathSt.setBackground(Color.BLACK);
-        inPathSt.setForeground(Color.WHITE);
+        JTextArea inPathSt = new JTextArea("<input path>");
+        inPathSt.setFont(new Font("Arial", Font.PLAIN, 12));
+        desc.setFont(new Font("Arial", Font.BOLD, 20));
         layout.putConstraint(SpringLayout.WEST, inPathSt, 0, SpringLayout.WEST, inPathDesc);
         layout.putConstraint(SpringLayout.NORTH, inPathSt, 10, SpringLayout.SOUTH, inPathDesc);
         pane.add(inPathSt);
         JButton inPathBrowse = new JButton("Browse...");
-        inPathBrowse.setBackground(Color.BLACK);
         layout.putConstraint(SpringLayout.WEST, inPathBrowse, 10, SpringLayout.EAST, inPathSt);
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, inPathBrowse, 0, SpringLayout.VERTICAL_CENTER, inPathSt);
         inPathBrowse.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                inPathPick.showDialog(null, "Open");
+                inPathPick.showDialog(pane, "Open");
                 inPathSt.setText(inPathPick.getSelectedFile().toString());
             }
         });
@@ -61,24 +69,21 @@ public class Main {
         outPathPick.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         JLabel outPathDesc = new JLabel("Output video directory");
         outPathDesc.setFont(inPathDesc.getFont());
-        outPathDesc.setForeground(Color.WHITE);
         layout.putConstraint(SpringLayout.NORTH, outPathDesc, 10, SpringLayout.SOUTH, inPathSt);
         layout.putConstraint(SpringLayout.WEST, outPathDesc, 0, SpringLayout.WEST, desc);
         pane.add(outPathDesc);
         JTextArea outPathStr = new JTextArea("<output path>");
-        outPathStr.setBackground(Color.BLACK);
-        outPathStr.setForeground(Color.WHITE);
+        outPathStr.setFont(inPathSt.getFont());
         layout.putConstraint(SpringLayout.WEST, outPathStr, 0, SpringLayout.WEST, desc);
         layout.putConstraint(SpringLayout.NORTH, outPathStr, 10, SpringLayout.SOUTH, outPathDesc);
         pane.add(outPathStr);
         JButton outPathBrowse = new JButton("Browse...");
-        outPathBrowse.setBackground(Color.BLACK);
         layout.putConstraint(SpringLayout.WEST, outPathBrowse, 10, SpringLayout.EAST, outPathStr);
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, outPathBrowse, 0, SpringLayout.VERTICAL_CENTER, outPathStr);
         outPathBrowse.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                outPathPick.showDialog(null, "Open");
+                outPathPick.showDialog(pane, "Open");
                 outPathStr.setText(outPathPick.getSelectedFile().toString());
             }
         });
@@ -86,7 +91,6 @@ public class Main {
         JSpinner overwrite = new JSpinner(new SpinnerNumberModel(1, 1, 33, 1));
         JLabel overDesc = new JLabel("Labo video to replace");
         overDesc.setFont(inPathDesc.getFont());
-        overDesc.setForeground(Color.WHITE);
         layout.putConstraint(SpringLayout.NORTH, overDesc, 10, SpringLayout.SOUTH, outPathStr);
         layout.putConstraint(SpringLayout.WEST, overDesc, 0, SpringLayout.WEST, outPathStr);
         pane.add(overDesc);
@@ -94,23 +98,20 @@ public class Main {
         layout.putConstraint(SpringLayout.WEST, overwrite, 0, SpringLayout.WEST, overDesc);
         pane.add(overwrite);
         JLabel ffmPathDesc = new JLabel("FFMPEG binary path");
-        ffmPathDesc.setForeground(Color.WHITE);
+        ffmPathDesc.setFont(overDesc.getFont());
         layout.putConstraint(SpringLayout.NORTH, ffmPathDesc, 10, SpringLayout.SOUTH, overwrite);
         layout.putConstraint(SpringLayout.WEST, ffmPathDesc, 0, SpringLayout.WEST, desc);
         pane.add(ffmPathDesc);
         JTextArea ffmPath = new JTextArea("<ffmpeg path>");
         ffmPath.setFont(outPathStr.getFont());
-        ffmPath.setBackground(Color.BLACK);
-        ffmPath.setForeground(Color.WHITE);
         layout.putConstraint(SpringLayout.WEST, ffmPath, 0, SpringLayout.WEST, inPathDesc);
         layout.putConstraint(SpringLayout.NORTH, ffmPath, 10, SpringLayout.SOUTH, ffmPathDesc);
         JButton ffmPathBrowse = new JButton("Browse...");
-        ffmPathBrowse.setBackground(Color.BLACK);
         layout.putConstraint(SpringLayout.WEST, ffmPathBrowse, 10, SpringLayout.EAST, ffmPath);
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, ffmPathBrowse, 0, SpringLayout.VERTICAL_CENTER, ffmPath);
         JSpinner qual = new JSpinner(new SpinnerNumberModel(15, .01, 500, .1));
         JLabel qualDesc = new JLabel("Quality of video in MB/s");
-        qualDesc.setForeground(Color.WHITE);
+        qualDesc.setFont(ffmPathDesc.getFont());
         layout.putConstraint(SpringLayout.NORTH, qualDesc, 10, SpringLayout.SOUTH, ffmPath);
         layout.putConstraint(SpringLayout.WEST, qualDesc, 0, SpringLayout.WEST, outPathStr);
         pane.add(qualDesc);
@@ -118,7 +119,6 @@ public class Main {
         layout.putConstraint(SpringLayout.WEST, qual, 0, SpringLayout.WEST, qualDesc);
         pane.add(qual);
         JButton start = new JButton("ffmpeg not found!");
-        start.setBackground(Color.BLACK);
         start.setEnabled(false);
         JFileChooser ffmPathPick = new JFileChooser();
         if (Files.exists(Paths.get(System.getProperty("user.home") + "/Documents/ffmpath.bin"))) {
@@ -127,20 +127,20 @@ public class Main {
                 ffmPath.setText(ffm.get(0));
                 start.setText("Go!");
                 start.setEnabled(true);
-            } catch (Exception aaaaa) {
-                System.out.println("IO Error");
+            } catch (Exception pathReadEx) {
+                System.out.println("IO Error! " + pathReadEx);
             }
         }
         ffmPathBrowse.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ffmPathPick.showDialog(null, "Open");
+                ffmPathPick.showDialog(pane, "Open");
                 ffmPath.setText(ffmPathPick.getSelectedFile().toString());
                 if (Files.exists(Paths.get(ffmPath.getText()))) {
                     try {
                         Files.write(Paths.get(System.getProperty("user.home") + "/Documents/ffmpath.bin"), ffmPath.getText().getBytes());
-                    } catch (Exception exc) {
-                        System.out.println("Writing error");
+                    } catch (Exception savePathEx) {
+                        System.out.println("Writing error! " + savePathEx);
                     }
                     start.setText("Go!");
                     start.setEnabled(true);
@@ -157,17 +157,18 @@ public class Main {
                     for (int i = 0; i < ffmpegArgs.length; i++) {
                         System.out.print(ffmpegArgs[i] + " ");
                     }
+                    System.out.println();
                     window.setVisible(false);
+                    JOptionPane.showConfirmDialog(pane, "The conversion is about to start. You'll be notified when it's done.\nThis may take a very long time, depending on the source video and your set quality.", "Labo VR Video Converter 1.0", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     double timeStart = System.currentTimeMillis();
-                    JOptionPane.showConfirmDialog(null, "Currently converting. You'll be notified when it's done.\nThis may take a very long time, depending on the source video and your set quality.", "Labo VR Video Converter 0.3", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     Runtime.getRuntime().exec(ffmpegArgs).waitFor();
                     double totalTime = ((((double) System.currentTimeMillis()) - timeStart) / 1000.0 / 60.0);
                     String totalTimeString = String.valueOf(totalTime);
                     totalTimeString = totalTimeString.substring(0, totalTimeString.length() - 14);
-                    JOptionPane.showConfirmDialog(null, "Video conversion finished!\nRemember to put it in /atmosphere/titles/0100165003504000/RomFS/Learn/\nTook "+totalTimeString+" minutes.", "Labo VR Video Converter 0.3", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showConfirmDialog(pane, "Video conversion finished!\nRemember to put it in /atmosphere/titles/0100165003504000/RomFS/Learn/\nTook " + totalTimeString + " minutes.", "Labo VR Video Converter 1.0", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     System.exit(0);
-                } catch (Exception ex) {
-                    System.out.println("FFMPEG failed!");
+                } catch (Exception ffmEx) {
+                    System.out.println("FFMPEG failed! " + ffmEx);
                 }
             }
         });
@@ -177,7 +178,16 @@ public class Main {
         layout.putConstraint(SpringLayout.SOUTH, pane, 10, SpringLayout.SOUTH, start);
         layout.putConstraint(SpringLayout.EAST, pane, 450, SpringLayout.EAST, desc);
         window.setResizable(true);
+        try {
+            window.setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
+        } catch (Exception imageFail) {
+            System.out.println("Icon failed. " + imageFail);
+        }
         window.pack();
         window.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new Main();
     }
 }

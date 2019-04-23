@@ -34,7 +34,7 @@ public class Main {
         UIManager.put("ComboBox.background", Color.black);
         UIManager.put("ComboBox.foreground", Color.white);
         SpringLayout layout = new SpringLayout();
-        JFrame window = new JFrame("Labo VR Video Converter 1.0");
+        JFrame window = new JFrame("Labo VR Video Converter 0.3");
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Container pane = window.getContentPane();
         window.setLayout(layout);
@@ -159,13 +159,13 @@ public class Main {
                     }
                     System.out.println();
                     window.setVisible(false);
-                    JOptionPane.showConfirmDialog(pane, "The conversion is about to start. You'll be notified when it's done.\nThis may take a very long time, depending on the source video and your set quality.", "Labo VR Video Converter 1.0", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showConfirmDialog(pane, "The conversion is about to start. You'll be notified when it's done.\nThis may take a very long time, depending on the source video and your set quality.", "Labo VR Video Converter 0.3", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     double timeStart = System.currentTimeMillis();
                     Runtime.getRuntime().exec(ffmpegArgs).waitFor();
                     double totalTime = ((((double) System.currentTimeMillis()) - timeStart) / 1000.0 / 60.0);
                     String totalTimeString = String.valueOf(totalTime);
                     totalTimeString = totalTimeString.substring(0, totalTimeString.length() - 14);
-                    JOptionPane.showConfirmDialog(pane, "Video conversion finished!\nRemember to put it in /atmosphere/titles/0100165003504000/RomFS/Learn/\nTook " + totalTimeString + " minutes.", "Labo VR Video Converter 1.0", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showConfirmDialog(pane, "Video conversion finished!\nRemember to put it in /atmosphere/titles/0100165003504000/RomFS/Learn/\nTook " + totalTimeString + " minutes.", "Labo VR Video Converter 0.3", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     System.exit(0);
                 } catch (Exception ffmEx) {
                     System.out.println("FFMPEG failed! " + ffmEx);

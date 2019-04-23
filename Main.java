@@ -20,7 +20,7 @@ public class Main {
             return;
         }
         SpringLayout layout = new SpringLayout();
-        JFrame window = new JFrame("Labo VR Video Converter 0.2");
+        JFrame window = new JFrame("Labo VR Video Converter 0.3");
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Container pane = window.getContentPane();
         pane.setBackground(Color.BLACK);
@@ -35,8 +35,11 @@ public class Main {
         inPathDesc.setForeground(Color.WHITE);
         layout.putConstraint(SpringLayout.NORTH, inPathDesc, 35, SpringLayout.SOUTH, desc);
         layout.putConstraint(SpringLayout.WEST, inPathDesc, 0, SpringLayout.WEST, desc);
+        inPathDesc.setFont(new Font("Calibri",Font.BOLD,15));
         pane.add(inPathDesc);
         JTextArea inPathSt = new JTextArea("<input path> ");
+        inPathSt.setFont(desc.getFont());
+        desc.setFont(new Font("Calibri",Font.BOLD,20));
         inPathSt.setBackground(Color.BLACK);
         inPathSt.setForeground(Color.WHITE);
         layout.putConstraint(SpringLayout.WEST, inPathSt, 0, SpringLayout.WEST, inPathDesc);
@@ -57,6 +60,7 @@ public class Main {
         JFileChooser outPathPick = new JFileChooser();
         outPathPick.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         JLabel outPathDesc = new JLabel("Output video directory");
+        outPathDesc.setFont(inPathDesc.getFont());
         outPathDesc.setForeground(Color.WHITE);
         layout.putConstraint(SpringLayout.NORTH, outPathDesc, 10, SpringLayout.SOUTH, inPathSt);
         layout.putConstraint(SpringLayout.WEST, outPathDesc, 0, SpringLayout.WEST, desc);
@@ -81,6 +85,7 @@ public class Main {
         pane.add(outPathBrowse);
         JSpinner overwrite = new JSpinner(new SpinnerNumberModel(1, 1, 33, 1));
         JLabel overDesc = new JLabel("Labo video to replace");
+        overDesc.setFont(inPathDesc.getFont());
         overDesc.setForeground(Color.WHITE);
         layout.putConstraint(SpringLayout.NORTH, overDesc, 10, SpringLayout.SOUTH, outPathStr);
         layout.putConstraint(SpringLayout.WEST, overDesc, 0, SpringLayout.WEST, outPathStr);
@@ -94,6 +99,7 @@ public class Main {
         layout.putConstraint(SpringLayout.WEST, ffmPathDesc, 0, SpringLayout.WEST, desc);
         pane.add(ffmPathDesc);
         JTextArea ffmPath = new JTextArea("<ffmpeg path>");
+        ffmPath.setFont(outPathStr.getFont());
         ffmPath.setBackground(Color.BLACK);
         ffmPath.setForeground(Color.WHITE);
         layout.putConstraint(SpringLayout.WEST, ffmPath, 0, SpringLayout.WEST, inPathDesc);
@@ -102,7 +108,7 @@ public class Main {
         ffmPathBrowse.setBackground(Color.BLACK);
         layout.putConstraint(SpringLayout.WEST, ffmPathBrowse, 10, SpringLayout.EAST, ffmPath);
         layout.putConstraint(SpringLayout.VERTICAL_CENTER, ffmPathBrowse, 0, SpringLayout.VERTICAL_CENTER, ffmPath);
-        JSpinner qual = new JSpinner(new SpinnerNumberModel(5, .01, 500, .1));
+        JSpinner qual = new JSpinner(new SpinnerNumberModel(15, .01, 500, .1));
         JLabel qualDesc = new JLabel("Quality of video in MB/s");
         qualDesc.setForeground(Color.WHITE);
         layout.putConstraint(SpringLayout.NORTH, qualDesc, 10, SpringLayout.SOUTH, ffmPath);
@@ -124,7 +130,6 @@ public class Main {
             } catch (Exception aaaaa) {
                 System.out.println("IO Error");
             }
-
         }
         ffmPathBrowse.addActionListener(new ActionListener() {
             @Override
@@ -147,15 +152,19 @@ public class Main {
         start.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String[] ffmpegArgs = new String[]{ffmPath.getText(), "-loglevel", "quiet", "-y", "-i", inPathSt.getText(), "-c:v", "libvpx-vp9", "-c:a", "libvorbis", "-s", "2560:1440", "-b:v", qual.getValue().toString(), outPathStr.getText() + "/Cvr_Vr180_" + vidNames[(int) overwrite.getValue() - 1] + ".webm"};
+                String[] ffmpegArgs = new String[]{ffmPath.getText(), "-loglevel", "quiet", "-y", "-i", inPathSt.getText(), "-c:v", "libvpx-vp9", "-c:a", "libvorbis", "-s", "2560x1440", "-b:v", qual.getValue().toString() + 'M', outPathStr.getText() + "/Cvr_Vr180_" + vidNames[(int) overwrite.getValue() - 1] + ".webm"};
                 try {
                     for (int i = 0; i < ffmpegArgs.length; i++) {
                         System.out.print(ffmpegArgs[i] + " ");
                     }
                     window.setVisible(false);
-                    JOptionPane.showConfirmDialog(null, "Currently converting. You'll be notified when it's done.\nThis may take a very long time, depending on the source video and your set quality.", "Labo VR Video Converter 0.2", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    double timeStart = System.currentTimeMillis();
+                    JOptionPane.showConfirmDialog(null, "Currently converting. You'll be notified when it's done.\nThis may take a very long time, depending on the source video and your set quality.", "Labo VR Video Converter 0.3", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     Runtime.getRuntime().exec(ffmpegArgs).waitFor();
-                    JOptionPane.showConfirmDialog(null, "Video conversion finished!\nRemember to put it in /atmosphere/titles/0100165003504000/RomFS/Learn/", "Labo VR Video Converter 0.2", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    double totalTime = ((((double) System.currentTimeMillis()) - timeStart) / 1000.0 / 60.0);
+                    String totalTimeString = String.valueOf(totalTime);
+                    totalTimeString = totalTimeString.substring(0, totalTimeString.length() - 14);
+                    JOptionPane.showConfirmDialog(null, "Video conversion finished!\nRemember to put it in /atmosphere/titles/0100165003504000/RomFS/Learn/\nTook "+totalTimeString+" minutes.", "Labo VR Video Converter 0.3", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
                     System.exit(0);
                 } catch (Exception ex) {
                     System.out.println("FFMPEG failed!");
